@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模拟路由</title>
+</head>
+
+<body>
+    <!-- 概述:
+        1.后端路由:概念:根据不同的 用户URL请求,返回不同的内容;   本质:URL请求地址 与 服务器资源 之间的对应关系
+        之前都是采用后端渲染;但是存在性能问题,
+        2.前端路由:概念:根据不同的 用户事件,显示不同的页面内容; 本质:用户事件 与 事件处理函数 之间的对应关系
+    -->
+
+    <div id="app">
+        <!-- 需求：通过点击a链接显示对应的信息 -->
+        <!-- 切换组件的超链接 -->
+        <a href="#/zhuye">主页</a>
+        <a href="#/keji">科技</a>
+        <a href="#/caijing">财经</a>
+        <a href="#/yule">娱乐</a>
+
+        <!-- 根据 :is 属性指定的组件名称,把对应的组件渲染到component 标签所在的位置 -->
+        <component :is="comName"></component>
+
+    </div>
+
+    <!-- 引入vue.js库文件 -->
+    <script type="text/javascript" src="../JS/vue.js"></script>
+    <script type="text/javascript">
+        
+
+        // #region 定义需要被切换的4个组件
+        // 主页组件
+        const zhuye = {
+            template: '<h1>主页信息</h1> '
+        }
+        // 科技组件
+        const keji = {
+            template: '<h1>科技信息</h1> '
+        }
+        // 财经组件
+        const caijing = {
+            template: '<h1>财经信息</h1> '
+        }
+        // 娱乐组件
+        const yule = {
+            template: '<h1>娱乐信息</h1> '
+        }
+
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                comName:'zhuye'
+            },
+            components:{
+                zhuye,
+                keji,
+                caijing,
+                yule
+            }
+        });
+
+        // 监听window 的 onhashchange 事件， 根据获取到的最新的 hash 值，切换到要显示的组件名称
+        window.onhashchange = function(){
+            // 通过location.hash获取到最新的hash值
+            console.log(location.hash);
+            // slice(1)从第一个字符之后开始截取
+            switch(location.hash.slice(1)){
+                // 如果截取到的hash 是主页，那么将comName赋值为主页，页面显示就是主页的组件
+               case '/zhuye':
+                vm.comName = 'zhuye'
+                break
+                case '/keji':
+                vm.comName = 'keji'
+                break
+                case '/caijing':
+                vm.comName = 'caijing'
+                break
+                case '/yule':
+                vm.comName = 'yule'
+                break
+            }
+        }
+    </script>
+</body>
+
+</html>
